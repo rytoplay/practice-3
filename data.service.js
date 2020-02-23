@@ -1,21 +1,40 @@
 const fs = require('fs');
 
-getFile = (fileName) => {
-      try {
-         data = JSON.parse(fs.readFileSync(fileName));
-      } catch(err) {
-         throw err;
-      };
-      return data;
+getFile = (fileName, callback) => {
+   fs.readFile(fileName, (err, res) => {
+      if (err) {throw err};
+      callback(JSON.parse(res));
+   });
 }
 
-getFieldNames = [
-   {"name": "userId", "label": "User ID"},
-   {"name": "firstName", "label": "First Name"},
-   {"name": "lastName", "label": "Last Name"},
-   {"name": "phoneNumber", "label": "Phone Number"},
-   {"name": "emailAddress", "label": "Email Address"},
-];
+const usersSchema = {
+   "id" : "/Users",
+   "type" : "object",
+   "properties": {
+      "userId" : {
+         "label" : "User ID",
+         "type" : Number
+      },
+      "firstName" : {
+         "label" : "First Name",
+         "type" : String
+      },
+      "lastName" : {
+         "label" : "Last Name",
+         "type" : String
+      },
+      "phoneNumber" : {
+         "label" : "Phone Number",
+         "type" : String
+      },
+      "emailAddress" : {
+         "label" : "Email Address",
+         "type" : String
+      },
+   }
+}
+
+
 
 exports.getFile = getFile;
-exports.getFieldNames = getFieldNames;
+exports.getSchema = usersSchema;
